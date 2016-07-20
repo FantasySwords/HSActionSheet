@@ -2,8 +2,8 @@
 //  HSActionSheet.h
 //  HSActionSheet
 //
-//  Created by hexiaojian on 16/6/2.
-//  Copyright © 2016年 Jerry Ho. All rights reserved.
+//  Created by Jerry Ho on 16/6/2.
+//  Copyright © 2016年 ThinkCode. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -19,6 +19,18 @@
             cancelButtonTitle:(NSString *)cancelButtonTitle
        destructiveButtonTitle:(NSString *)destructiveButtonTitle
             otherButtonTitles:(NSString *)otherButtonTitles, ...;
+
+/**
+ *  HSActionSheet block调用方式
+ *  Warning:使用此方法delegate将无效
+ *
+ *  @param buttonClickedAtIndex   点击某行或者取消选择后调用，buttonIndex:选择的行index， isCancel是否取消选择
+ */
+- (instancetype)initWithTitle:(NSString *)title
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+       destructiveButtonTitle:(NSString *)destructiveButtonTitle
+            otherButtonTitles:(NSArray *)otherButtonTitles
+           buttonClickedAtIndex:(void (^)(NSInteger buttonIndex, BOOL isCancel)) buttonClickedAtIndex;
 
 @property(nonatomic,readonly,getter=isVisible) BOOL visible;
 

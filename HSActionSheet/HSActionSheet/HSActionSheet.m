@@ -2,8 +2,8 @@
 //  HSActionSheet.m
 //  HSActionSheet
 //
-//  Created by hexiaojian on 16/6/2.
-//  Copyright © 2016年 Jerry Ho. All rights reserved.
+//  Created by Jerry Ho on 16/6/2.
+//  Copyright © 2016年 ThinkCode. All rights reserved.
 //
 
 #import "HSActionSheet.h"
@@ -57,6 +57,9 @@
 //Window
 @property (nonatomic, strong) UIWindow * alertWindow;
 
+//buttonClickedAction
+@property (nonatomic, copy) void (^buttonClickedAction)(NSInteger buttonIndex, BOOL isCancel);
+
 @end
 
 
@@ -106,6 +109,30 @@
     return self;
 }
 
+- (instancetype)initWithTitle:(NSString *)title
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+       destructiveButtonTitle:(NSString *)destructiveButtonTitle
+            otherButtonTitles:(NSArray *)otherButtonTitles
+         buttonClickedAtIndex:(void (^)(NSInteger buttonIndex, BOOL isCancel)) buttonClickedAtIndex
+{
+    if (self = [super init]) {
+        
+        self.title = (title && title.length) ?title :nil;
+        
+        _cancleButtonTitle = (cancelButtonTitle && cancelButtonTitle.length) ?cancelButtonTitle :nil;
+        _destructiveButtonTitle = (destructiveButtonTitle && destructiveButtonTitle.length) ?destructiveButtonTitle :nil;
+        
+        //获取其他按钮title
+        if (otherButtonTitles && ![otherButtonTitles isKindOfClass:[NSArray class]]) {
+            @throw [NSException exceptionWithName:@"参数错误" reason:@"otherButtonTitles必须是数组类型" userInfo:nil];
+        }
+        
+        _otherButtonTitles = otherButtonTitles ?[otherButtonTitles mutableCopy] :[NSMutableArray array];
+        _buttonClickedAction = buttonClickedAtIndex;
+    }
+    
+    return self;
+}
 
 - (void)setupActionSheetUI
 {
@@ -212,23 +239,20 @@
     if ([self.delegate respondsToSelector:@selector(actionSheetCancel:)]) {
         [self.delegate actionSheetCancel:self];
     }
+    
+    [self actionSheetCancel];
 }
 
 - (void)buttonClickedAction:(UIButton *)btn
 {
-    if ([self.delegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
-        [self.delegate actionSheet:self clickedButtonAtIndex:btn.tag - 100];
-    }
-
+    [self clickedButtonAtIndex:btn.tag - 100];
     [self dismissWithAnimated:YES];
 }
 
 - (void)cancleButtonClickedAction:(UIButton *)btn
 {
     [self dismissWithAnimated:YES];
-    if ([self.delegate respondsToSelector:@selector(actionSheetCancel:)]) {
-        [self.delegate actionSheetCancel:self];
-    }
+    [self actionSheetCancel];
 }
 
 - (UIWindow *)alertWindow
@@ -313,9 +337,7 @@
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated
 {
-    if ([self.delegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
-        [self.delegate actionSheet:self clickedButtonAtIndex:buttonIndex];
-    }
+    [self clickedButtonAtIndex:buttonIndex];
     [self dismissWithAnimated:animated];
 }
 
@@ -361,6 +383,27 @@
 {
     //NSLog(@"dealloc");
 }
+
+
+#pragma mark - delegate wrapper
+- (void)clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (self.buttonClickedAction) {
+        self.buttonClickedAction(buttonIndex, NO);
+    }else if ([self.delegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)]) {
+        [self.delegate actionSheet:self clickedButtonAtIndex:buttonIndex];
+    }
+}
+
+- (void)actionSheetCancel
+{
+    if (self.buttonClickedAction) {
+        self.buttonClickedAction(-1, YES);
+    }else if ([self.delegate respondsToSelector:@selector(actionSheetCancel:)]) {
+        [self.delegate actionSheetCancel:self];
+    }
+}
+
 
 
 @end

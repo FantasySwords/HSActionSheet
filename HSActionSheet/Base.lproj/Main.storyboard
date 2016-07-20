@@ -45,9 +45,25 @@
                                     <action selector="btn2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="w1Z-Eh-H5K"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CU4-Wb-gPi">
+                                <rect key="frame" x="180" y="278" width="240" height="60"/>
+                                <color key="backgroundColor" red="0.38431372549999998" green="0.80784313730000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="KNa-kc-dkh"/>
+                                    <constraint firstAttribute="height" constant="60" id="kJu-wN-hbp"/>
+                                </constraints>
+                                <state key="normal" title="使用了Block的HSActionSheet">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btn3:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FlV-qd-ykt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="CU4-Wb-gPi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8PW-75-zhO"/>
+                            <constraint firstItem="CU4-Wb-gPi" firstAttribute="top" secondItem="Ocd-pO-M44" secondAttribute="bottom" constant="34" id="Cy6-u8-LY9"/>
                             <constraint firstItem="zNl-BU-nEp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="70" id="c77-Ug-ojz"/>
                             <constraint firstItem="Ocd-pO-M44" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dcl-Bk-2Ve"/>
                             <constraint firstItem="Ocd-pO-M44" firstAttribute="top" secondItem="zNl-BU-nEp" secondAttribute="bottom" constant="34" id="q9E-0w-hjt"/>
