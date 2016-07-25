@@ -38,6 +38,8 @@
 
 @property(nonatomic,copy) NSString *title;
 
+@property(nonatomic,assign) NSInteger tag;
+
 //TODO:待添加
 //@property(nonatomic, assign) BOOL isFullScaleInLandscape;
 
